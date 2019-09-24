@@ -1,4 +1,4 @@
-package web.exception;
+package com.tuto.security.web.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

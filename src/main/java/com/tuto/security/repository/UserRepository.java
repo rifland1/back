@@ -1,6 +1,6 @@
-package repositories;
+package com.tuto.security.repository;
 
-import model.User;
+import com.tuto.security.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

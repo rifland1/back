@@ -1,4 +1,4 @@
-package provider;
+package com.tuto.security.provider;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -7,16 +7,14 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import service.UserService;
-
+import com.tuto.security.service.UserDetailsServiceImpl;
 /**
  * Created by Rifland on 18/09/2019.
  */
 public class ImplAuthProvider extends DaoAuthenticationProvider {
 
     @Autowired
-    UserService userDetailsService;
+    UserDetailsServiceImpl userDetailsService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
