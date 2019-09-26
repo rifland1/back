@@ -21,6 +21,9 @@ import org.springframework.security.web.authentication.Http403ForbiddenEntryPoin
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -68,7 +71,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf()
+        http
+                .cors()
+                .and()
+                .csrf()
                 .disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(new Http403ForbiddenEntryPoint() {
@@ -77,7 +83,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(getProvider())
                 .formLogin()
                 .loginProcessingUrl("/login")
-                .usernameParameter("username")
                 .passwordParameter("password")
                 .successHandler(new AuthentificationLoginSuccessHandler())
                 .failureHandler(new SimpleUrlAuthenticationFailureHandler())
@@ -92,16 +97,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/logout").permitAll()
                 .antMatchers("/user").authenticated()
                 .anyRequest().permitAll();
+
+
     }
 
 
     private class AuthentificationLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request,
-                                            HttpServletResponse response, Authentication authentication){
+                                            HttpServletResponse response, Authentication authentication) {
             response.setStatus(HttpServletResponse.SC_OK);
         }
     }
+
     private class AuthentificationLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
         @Override
         public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -115,6 +123,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ImplAuthProvider provider = new ImplAuthProvider();
         provider.setUserDetailsService(userDetailsService);
         return provider;
+    }
+
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
     }
 
 
