@@ -80,22 +80,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new Http403ForbiddenEntryPoint() {
                 })
                 .and()
-                .authenticationProvider(getProvider())
+//                .authenticationProvider(getProvider())
                 .formLogin()
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/api/login")
                 .passwordParameter("password")
                 .successHandler(new AuthentificationLoginSuccessHandler())
                 .failureHandler(new SimpleUrlAuthenticationFailureHandler())
                 .and()
                 .logout()
-                .logoutUrl("/logout")
+                .logoutUrl("/api/logout")
                 .logoutSuccessHandler(new AuthentificationLogoutSuccessHandler())
                 .invalidateHttpSession(true)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/logout").permitAll()
-                .antMatchers("/user").authenticated()
+                .antMatchers("/api/login").permitAll()
+                .antMatchers("/api/logout").permitAll()
+                .antMatchers("/api/user").authenticated()
                 .anyRequest().permitAll();
 
 
@@ -118,12 +118,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-    @Bean
-    public AuthenticationProvider getProvider() {
-        ImplAuthProvider provider = new ImplAuthProvider();
-        provider.setUserDetailsService(userDetailsService);
-        return provider;
-    }
+//    @Bean
+//    public AuthenticationProvider getProvider() {
+//        ImplAuthProvider provider = new ImplAuthProvider();
+//        provider.setUserDetailsService(userDetailsService);
+//        return provider;
+//    }
 
 
     @Bean
