@@ -1,6 +1,6 @@
 package com.tuto.security.configuration;
 
-import com.tuto.security.provider.ImplAuthProvider;
+import com.tuto.security.model.User;
 import com.tuto.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,9 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -82,9 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .exceptionHandling()
-                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and()
-//                .authenticationProvider(getProvider())
                 .formLogin()
                 .loginProcessingUrl("/api/login")
                 .passwordParameter("password")
@@ -109,7 +104,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private class AuthentificationLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request,
-                                            HttpServletResponse response, Authentication authentication) throws  IOException{
+                                            HttpServletResponse response, Authentication authentication) throws IOException {
+            response.getWriter().write("{user:" + ((User) authentication.getPrincipal()).getUsername() + "}");
             response.setStatus(HttpServletResponse.SC_OK);
         }
     }
@@ -121,13 +117,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             response.setStatus(HttpServletResponse.SC_OK);
         }
     }
-
-//    @Bean
-//    public AuthenticationProvider getProvider() {
-//        ImplAuthProvider provider = new ImplAuthProvider();
-//        provider.setUserDetailsService(userDetailsService);
-//        return provider;
-//    }
 
 
     @Bean
