@@ -105,7 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request,
                                             HttpServletResponse response, Authentication authentication) throws IOException {
-            response.getWriter().write("{user:" + ((User) authentication.getPrincipal()).getUsername() + "}");
+            //response.getWriter().write("{user:" + ((User) authentication.getPrincipal()).getUsername() + "}");
             response.setStatus(HttpServletResponse.SC_OK);
         }
     }

@@ -1,5 +1,8 @@
 package com.tuto.security.web.controller;
 
+import com.tuto.security.model.AuthenticationUser;
+import com.tuto.security.model.User;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +17,11 @@ import java.security.Principal;
 public class AuthenticationController {
 
 
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public Object currentUserNameSimple(HttpServletRequest request) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            return (UserDetails)principal;
-        } else {
-            return  null;
-        }
+    @RequestMapping("/api/user")
+    public AuthenticationUser user(Principal user) {
+        User u = (User)((UsernamePasswordAuthenticationToken)user).getPrincipal();
+        AuthenticationUser authenticationUser = new AuthenticationUser(u.getId(), u.getUsername());
+        return authenticationUser;
     }
 
 }

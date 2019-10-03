@@ -1,11 +1,13 @@
 package com.tuto.security.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * Created by Rifland on 18/09/2019.
@@ -18,10 +20,20 @@ public class User implements Serializable, UserDetails {
     @GeneratedValue
     private Integer id;
 
+    @NotEmpty
+    @Column(nullable = false, unique = true)
     private String username;
 
+    @NotEmpty
     private String password;
 
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.
+            REMOVE}, fetch = FetchType.EAGER)
+    private List<Role> roles = new ArrayList<Role>();
+
+    public User() {
+    }
 
     public Integer getId() {
         return id;
@@ -49,6 +61,22 @@ public class User implements Serializable, UserDetails {
         this.password = password;
     }
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
+    }
+
+    public void deleteRole(Role role) {
+        roles.remove(role);
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -72,7 +100,11 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        return authorities;
     }
 
 
