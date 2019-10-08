@@ -17,7 +17,7 @@ import java.security.Principal;
 public class AuthenticationController {
 
 
-    @RequestMapping("/api/user")
+    @RequestMapping("/api/auth")
     public AuthenticationUser user(Principal user) {
         User u = (User) ((UsernamePasswordAuthenticationToken) user).getPrincipal();
         AuthenticationUser authenticationUser = new AuthenticationUser(u.getId(), u.getUsername(), u.getRoles());
