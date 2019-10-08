@@ -30,6 +30,9 @@ public class User implements Serializable, UserDetails {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.
             REMOVE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "USERS_ROLES",
+            joinColumns = {@JoinColumn(name = "id_user", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "id_role", referencedColumnName = "id")})
     private List<Role> roles = new ArrayList<Role>();
 
     public User() {
@@ -102,7 +105,7 @@ public class User implements Serializable, UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            authorities.add(role);
         }
         return authorities;
     }

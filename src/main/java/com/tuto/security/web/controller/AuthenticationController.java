@@ -19,8 +19,8 @@ public class AuthenticationController {
 
     @RequestMapping("/api/user")
     public AuthenticationUser user(Principal user) {
-        User u = (User)((UsernamePasswordAuthenticationToken)user).getPrincipal();
-        AuthenticationUser authenticationUser = new AuthenticationUser(u.getId(), u.getUsername());
+        User u = (User) ((UsernamePasswordAuthenticationToken) user).getPrincipal();
+        AuthenticationUser authenticationUser = new AuthenticationUser(u.getId(), u.getUsername(), u.getRoles());
         return authenticationUser;
     }
 
