@@ -33,7 +33,7 @@ public class User implements Serializable, UserDetails {
     @JoinTable(name = "USERS_ROLES",
             joinColumns = {@JoinColumn(name = "id_user", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "id_role", referencedColumnName = "id")})
-    private List<Role> roles = new ArrayList<Role>();
+    private List<Role> roles = new ArrayList<>();
 
     public User() {
     }
