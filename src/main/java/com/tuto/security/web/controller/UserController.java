@@ -13,6 +13,6 @@ public class UserController {
 
     @RequestMapping("/api/user")
     public String user() {
-        return "{\"data\":\"Hello, vous êtes bien en page User\"}";
+        return "{\"data\":\"user\"}";
     }
 }

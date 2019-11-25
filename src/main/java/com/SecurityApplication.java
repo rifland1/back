@@ -8,12 +8,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @EntityScan("com.tuto.security")
 public class SecurityApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SecurityApplication.class, args);
-	}
-
-
-
+    public static void main(String[] args) {
+        SpringApplication.run(SecurityApplication.class, args);
+    }
 
 
 }

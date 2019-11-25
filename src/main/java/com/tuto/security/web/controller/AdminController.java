@@ -22,7 +22,7 @@ public class AdminController {
 
     @RequestMapping("/api/admin")
     public String admin() {
-        return "{\"data\":\"Hello, vous êtes bien en page Admin\"}";
+        return "{\"data\":\"admin\"}";
     }
 
 
@@ -30,9 +30,7 @@ public class AdminController {
     public List<AuthenticationUser> getUsers() {
         List<AuthenticationUser> authenticationUsers = new ArrayList<>();
         List<User> users = userRepository.findAll();
-        for (User u : users) {
-            authenticationUsers.add(new AuthenticationUser(u.getId(), u.getUsername(), u.getRoles()));
-        }
+        users.forEach(u -> authenticationUsers.add(new AuthenticationUser(u.getId(), u.getUsername(), u.getRoles())));
         return authenticationUsers;
     }
 
